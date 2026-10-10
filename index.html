@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fff7f1">
+  <meta name="description" content="A warm birthday surprise made with love for YASHVII.">
+  <meta name="title" content="Happy Birthday, YASHVII!">
+  <meta name="author" content="YASHVII">
+  <title>Happy Birthday, YASHVII! | A Little Surprise</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Existing floating-heart cursor feature. -->
+  <script>
+    var colours = ['#ef6f8a', '#f7a3a9', '#d9c8f7', '#f4c7a1', '#e78aa5'];
+    var minisize = 14;
+    var maxisize = 25;
+    var hearts = 34;
+    var over_or_under = "over";
+    var x = ox = 400;
+    var y = oy = 300;
+    var swide = 800;
+    var shigh = 600;
+    var sleft = sdown = 0;
+    var herz = [];
+    var herzx = [];
+    var herzy = [];
+    var herzs = [];
+    var kiss = false;
+
+    if (typeof addRVLoadEvent !== 'function') {
+      function addRVLoadEvent(funky) {
+        var oldonload = window.onload;
+        if (typeof oldonload !== 'function') window.onload = funky;
+        else window.onload = function() {
+          if (oldonload) oldonload();
+          funky();
+        };
+      }
+    }
+
+    addRVLoadEvent(mwah);
+
+    function mwah() {
+      if (!document.getElementById) return;
+      var i;
+      for (i = 0; i < hearts; i++) {
+        var heart = createDiv("auto", "auto");
+        heart.style.visibility = "hidden";
+        heart.style.zIndex = over_or_under === "over" ? "1001" : "0";
+        heart.style.color = colours[i % colours.length];
+        heart.style.pointerEvents = "none";
+        heart.style.opacity = 0.6;
+        heart.appendChild(document.createTextNode(String.fromCharCode(9829)));
+        document.body.appendChild(heart);
+        herz[i] = heart;
+        herzy[i] = false;
+      }
+      set_scroll();
+      set_width();
+      herzle();
+    }
+
+    function herzle() {
+      var c;
+      if (Math.abs(x - ox) > 1 || Math.abs(y - oy) > 1) {
+        ox = x;
+        oy = y;
+        for (c = 0; c < hearts; c++) if (herzy[c] === false) {
+          herz[c].firstChild.nodeValue = String.fromCharCode(9829);
+          herz[c].style.left = (herzx[c] = x - minisize / 2) + "px";
+          herz[c].style.top = (herzy[c] = y - minisize) + "px";
+          herz[c].style.fontSize = minisize + "px";
+          herz[c].style.fontWeight = 'normal';
+          herz[c].style.visibility = 'visible';
+          herzs[c] = minisize;
+          break;
+        }
+      }
+      for (c = 0; c < hearts; c++) if (herzy[c] !== false) blow_me_a_kiss(c);
+      setTimeout(herzle, 45);
+    }
+
+    document.onmousedown = pucker;
+    document.onmouseup = function() { clearTimeout(kiss); };
+
+    function pucker() {
+      ox = -1;
+      oy = -1;
+      kiss = setTimeout(pucker, 100);
+    }
+
+    function blow_me_a_kiss(i) {
+      herzy[i] -= herzs[i] / minisize + i % 2;
+      herzx[i] += (i % 5 - 2) / 5;
+      if (herzy[i] < sdown - herzs[i] || herzx[i] < sleft - herzs[i] || herzx[i] > sleft + swide - herzs[i]) {
+        herz[i].style.visibility = "hidden";
+        herzy[i] = false;
+      } else if (herzs[i] > minisize + 2 && Math.random() < .5 / hearts) {
+        break_my_heart(i);
+      } else {
+        if (Math.random() < maxisize / Math.max(herzy[i], 1) && herzs[i] < maxisize) {
+          herz[i].style.fontSize = (++herzs[i]) + "px";
+        }
+        herz[i].style.top = herzy[i] + "px";
+        herz[i].style.left = herzx[i] + "px";
+      }
+    }
+
+    function break_my_heart(i) {
+      herz[i].firstChild.nodeValue = String.fromCharCode(9676);
+      herz[i].style.fontWeight = 'bold';
+      herzy[i] = false;
+      setTimeout(function() { herz[i].style.visibility = "hidden"; }, 400);
+    }
+
+    document.onmousemove = function(e) {
+      if (e) {
+        y = e.pageY;
+        x = e.pageX;
+      } else {
+        set_scroll();
+        y = event.y + sdown;
+        x = event.x + sleft;
+      }
+    };
+
+    window.onresize = set_width;
+    window.onscroll = set_scroll;
+
+    function set_width() {
+      swide = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+      shigh = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    }
+
+    function set_scroll() {
+      sdown = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      sleft = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0;
+    }
+
+    function createDiv(height, width) {
+      var div = document.createElement("div");
+      div.style.position = "absolute";
+      div.style.height = height;
+      div.style.width = width;
+      div.style.overflow = "hidden";
+      div.style.backgroundColor = "transparent";
+      return div;
+    }
+  </script>
+</head>
+
+<body>
+  <div id="celebration-layer" aria-hidden="true"></div>
+
+  <div id="wrapper">
+    <header class="site-header" aria-label="Birthday surprise navigation">
+      <a class="brand" href="#home" aria-label="Back to the birthday welcome">
+        <span class="brand__mark"><i class="fa-solid fa-heart" aria-hidden="true"></i></span>
+        <span>
+          <strong>for YASHVII</strong>
+          <small>a little birthday love</small>
+        </span>
+      </a>
+
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="#memories">Memories</a>
+        <a href="#messages">Messages</a>
+        <a href="#final-note">Final note</a>
+      </nav>
+
+      <!-- EDIT: add your song at ./music/birthday-song.mp3. No autoplay is used. -->
+      <button class="music-toggle" id="music-toggle" type="button" aria-label="Play birthday music">
+        <i class="fa-solid fa-music" aria-hidden="true"></i>
+        <span id="music-label">Play a song</span>
+      </button>
+      <audio id="birthday-music" loop preload="metadata">
+        <source src="./music/birthday-song.mp3" type="audio/mpeg">
+      </audio>
+    </header>
+
+    <main>
+      <section class="hero" id="home" aria-labelledby="hero-title">
+        <div class="hero__copy">
+          <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span> A little surprise for you</p>
+          <h1 id="hero-title">Happy Birthday,<span class="hero__name">YASHVII!</span></h1>
+          <!-- EDIT: replace this subtitle with your short personal message. -->
+          <p class="hero__subtitle">For the girl who makes ordinary moments feel like little celebrations.</p>
+
+          <div class="hero__actions">
+            <button class="button button--primary" id="open-surprise" type="button">
+              Open Your Surprise <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
+            </button>
+            <button class="button button--quiet" id="btn__letter" type="button">
+              Read your letter <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+            </button>
+          </div>
+
+          <div class="hero__details" aria-label="Birthday details">
+            <div class="detail-pill">
+              <i class="fa-regular fa-calendar-heart" aria-hidden="true"></i>
+              <span class="date__of__birth"><span id="birthday-date"></span></span>
+            </div>
+            <div class="detail-pill">
+              <i class="fa-solid fa-sparkles" aria-hidden="true"></i>
+              <span>made with love</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero__visual" aria-label="Birthday illustration">
+          <div class="hero__glow hero__glow--one" aria-hidden="true"></div>
+          <div class="hero__glow hero__glow--two" aria-hidden="true"></div>
+          <div class="photo-frame">
+            <span class="photo-frame__label">for YASHVII</span>
+            <!-- EDIT: replace with her main photo. Keep path inside ./Images. -->
+            <img src="./Images/yashvii-main.jpg" alt="YASHVII smiling beautifully">
+            <span class="photo-frame__note"><i class="fa-solid fa-heart" aria-hidden="true"></i> you are magic</span>
+          </div>
+          <img class="hero__hat" src="./Images/hat.png" alt="Pink birthday party hat decoration">
+          <img class="hero__flower" src="./Images/decorate_flower.png" alt="Small flower decoration">
+          <span class="hero__sparkle hero__sparkle--one" aria-hidden="true">&#10022;</span>
+          <span class="hero__sparkle hero__sparkle--two" aria-hidden="true">&#10022;</span>
+          <span class="hero__heart hero__heart--one" aria-hidden="true">&#10084;</span>
+          <span class="hero__heart hero__heart--two" aria-hidden="true">&#10084;</span>
+        </div>
+      </section>
+
+      <section class="section section--cream" id="memories" aria-labelledby="memories-title">
+        <div class="section__inner">
+          <div class="section-heading reveal">
+            <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span> the sweetest little archive</p>
+            <h2 id="memories-title">Beautiful <em>Memories</em></h2>
+            <p>Six tiny windows into the moments that make you impossible not to love.</p>
+          </div>
+
+          <div class="memory-grid">
+            <!-- EDIT: replace image path and caption. -->
+            <button class="memory-card reveal" type="button" data-caption="Sunny Glow">
+              <span class="memory-card__paper">
+                <span class="memory-card__image"><img src="./Images/1.jpeg" alt="YASHVII smiling beautifully"></span>
+                <span class="memory-card__caption">Sunny Glow</span>
+                <span class="memory-card__number">01</span>
+              </span>
+            </button>
+            <!-- EDIT: replace image path and caption. -->
+            <button class="memory-card reveal" type="button" data-caption="Sweet Smile">
+              <span class="memory-card__paper">
+                <span class="memory-card__image"><img src="./Images/4.jpeg" alt="YASHVII smiling in a dark outfit outdoors"></span>
+                <span class="memory-card__caption">Sweet Smile</span>
+                <span class="memory-card__number">02</span>
+              </span>
+            </button>
+            <!-- EDIT: replace image path and caption. -->
+            <button class="memory-card reveal" type="button" data-caption="Blue Vibes">
+              <span class="memory-card__paper">
+                <span class="memory-card__image"><img src="./Images/5.jpeg" alt="YASHVII smiling in a light blue dress outdoors"></span>
+                <span class="memory-card__caption">Blue Vibes</span>
+                <span class="memory-card__number">03</span>
+              </span>
+            </button>
+            <!-- EDIT: replace image path and caption. -->
+            <button class="memory-card reveal" type="button" data-caption="Pink Mood">
+              <span class="memory-card__paper">
+                <span class="memory-card__image"><img src="./Images/6.jpeg" alt="YASHVII smiling in a red scarf indoors"></span>
+                <span class="memory-card__caption">Pink Mood</span>
+                <span class="memory-card__number">04</span>
+              </span>
+            </button>
+            <!-- EDIT: replace image path and caption. -->
+            <button class="memory-card reveal" type="button" data-caption="Mirror Magic">
+              <span class="memory-card__paper">
+                <span class="memory-card__image"><img src="./Images/7.jpeg" alt="YASHVII taking a mirror selfie in a red dress"></span>
+                <span class="memory-card__caption">Mirror Magic</span>
+                <span class="memory-card__number">05</span>
+              </span>
+            </button>
+            <!-- EDIT: replace image path and caption. -->
+            <button class="memory-card reveal" type="button" data-caption="Lovely Angle">
+              <span class="memory-card__paper">
+                <span class="memory-card__image"><img src="./Images/233.jpeg" alt="YASHVII smiling in a black outfit indoors"></span>
+                <span class="memory-card__caption">Lovely Angle</span>
+                <span class="memory-card__number">06</span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--lavender" id="messages" aria-labelledby="messages-title">
+        <div class="section__inner">
+          <div class="section-heading reveal">
+            <p class="eyebrow"><span class="eyebrow__dot" aria-hidden="true"></span> words from people who love you</p>
+            <h2 id="messages-title">Birthday <em>Messages</em></h2>
+            <p>Because one birthday wish could never hold all the love around you.</p>
+          </div>
+
+          <div class="message-grid">
+            <article class="message-card reveal">
+              <div class="message-card__top">
+                <div class="message-card__avatar" aria-label="Blank profile picture" style="background: linear-gradient(135deg, rgba(185, 165, 223, 0.35), rgba(255, 214, 196, 0.5));"><span>Photo</span></div>
+                <div>
+                  <p class="message-card__label">Message from</p>
+                  <h3>1</h3>
+                </div>
+              </div>
+              <p class="message-card__text">Happy birthday, YASHVII! You are the kindest, most beautiful soul, and your smile makes every moment brighter. Wishing you endless love, laughter, and happiness.</p>
+              <span class="message-card__heart" aria-hidden="true">&#10084;</span>
+            </article>
+
+            <article class="message-card reveal">
+              <div class="message-card__top">
+                <div class="message-card__avatar message-card__avatar--peach" aria-label="Blank profile picture" style="background: linear-gradient(135deg, rgba(240, 155, 131, 0.5), rgba(255, 214, 196, 0.7));"><span>Photo</span></div>
+                <div>
+                  <p class="message-card__label">Message from</p>
+                  <h3>2</h3>
+                </div>
+              </div>
+              <p class="message-card__text">YASHVII, you deserve all the love in the world. Keep shining, keep being you, and may every dream you chase turn into a beautiful reality. Happy birthday, gorgeous.</p>
+              <span class="message-card__heart" aria-hidden="true">&#10084;</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--peach" id="final-note" aria-labelledby="final-note-title">
+        <div class="section__inner section__inner--narrow">
+          <div class="closing-card reveal">
+            <span class="closing-card__seal" aria-hidden="true"><i class="fa-solid fa-heart"></i></span>
+            <p class="eyebrow">one last thing</p>
+            <h2 id="final-note-title">You are special, loved, and unforgettable.</h2>
+            <p class="closing-card__text">May this year bring you gentle mornings, loud laughter, brave dreams, and every kind of happiness you deserve.</p>
+            <button class="button button--primary" id="reveal-message" type="button" aria-controls="hidden-message" aria-expanded="false">Reveal your final message <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i></button>
+            <div class="hidden-message" id="hidden-message" hidden>
+              <!-- EDIT: replace this hidden final message. -->
+              <p>Thank you for being exactly who you are. The world is softer, brighter, and more beautiful with you in it. Happy birthday, YASHVII.</p>
+              <span aria-hidden="true">&#10084; &#10022; &#10084;</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Made for YASHVII, with a pocketful of love <span aria-hidden="true">&#10084;</span></p>
+      <a href="#home">Back to the top <i class="fa-solid fa-arrow-up" aria-hidden="true"></i></a>
+    </footer>
+  </div>
+
+  <div class="lightbox" id="lightbox" hidden>
+    <div class="lightbox__backdrop" data-lightbox-close></div>
+    <div class="lightbox__dialog" role="dialog" aria-modal="true" aria-labelledby="lightbox-caption">
+      <button class="lightbox__close" id="lightbox-close" type="button" aria-label="Close photo preview"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+      <img id="lightbox-image" src="" alt="">
+      <p id="lightbox-caption"></p>
+    </div>
+  </div>
+
+  <!-- Existing letter feature, kept as an editable surprise note. -->
+  <div class="box__letter" id="letter-modal" hidden>
+    <div class="letter__border" role="dialog" aria-modal="true" aria-labelledby="letter-title">
+      <button class="close" id="letter-close" type="button" aria-label="Close birthday letter"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+      <div class="letter">
+        <div class="title__letter" id="letter-title"></div>
+        <div class="content__letter">
+          <div class="left">
+            <img id="heart__letter" src="./Images/heart_letter.png" alt="Heart illustration inside the birthday letter">
+            <img class="heart heart_1" width="20" src="./Images/heart.png" alt="Decorative heart">
+            <img class="heart heart_2" width="20" src="./Images/heart.png" alt="Decorative heart">
+            <img class="heart heart_3" width="20" src="./Images/heart.png" alt="Decorative heart">
+            <img class="heart heart_4" width="20" src="./Images/heart.png" alt="Decorative heart">
+          </div>
+          <div class="right">
+            <div class="love__img"><img src="./Images/love.png" alt="Love illustration" width="220"></div>
+            <div class="text__letter"><p></p></div>
+            <img id="mewmew" width="80" src="./Images/mewmew.gif" alt="Cute animated birthday character">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.body.classList.add('js');
+
+    var celebrationLayer = document.querySelector('#celebration-layer');
+    var revealItems = document.querySelectorAll('.reveal');
+    var openSurprise = document.querySelector('#open-surprise');
+    var finalMessageButton = document.querySelector('#reveal-message');
+    var hiddenMessage = document.querySelector('#hidden-message');
+    var lightbox = document.querySelector('#lightbox');
+    var lightboxImage = document.querySelector('#lightbox-image');
+    var lightboxCaption = document.querySelector('#lightbox-caption');
+    var lightboxClose = document.querySelector('#lightbox-close');
+    var memoryCards = document.querySelectorAll('.memory-card');
+    var birthdayMusic = document.querySelector('#birthday-music');
+    var musicToggle = document.querySelector('#music-toggle');
+    var musicLabel = document.querySelector('#music-label');
+
+    console.assert(memoryCards.length === 6, 'Birthday gallery should contain six memory cards.');
+
+    if ('IntersectionObserver' in window) {
+      var revealObserver = new IntersectionObserver(function(entries, observer) {
+        entries.forEach(function(entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.12 });
+      revealItems.forEach(function(item) { revealObserver.observe(item); });
+    } else {
+      revealItems.forEach(function(item) { item.classList.add('is-visible'); });
+    }
+
+    function launchCelebration(amount) {
+      var symbols = ['&#10084;', '&#10022;', '&#10047;', '&#9670;'];
+      var colors = ['#e85d78', '#f09b83', '#b8a3e5', '#e5b567', '#8eb9b0'];
+      for (var i = 0; i < amount; i++) {
+        var piece = document.createElement('span');
+        piece.className = 'celebration-piece';
+        piece.innerHTML = symbols[i % symbols.length];
+        piece.style.left = (Math.random() * 100) + 'vw';
+        piece.style.setProperty('--drift', ((Math.random() * 180) - 90) + 'px');
+        piece.style.setProperty('--delay', (Math.random() * 0.3) + 's');
+        piece.style.setProperty('--duration', (1.6 + Math.random() * 1.2) + 's');
+        piece.style.color = colors[i % colors.length];
+        celebrationLayer.appendChild(piece);
+        window.setTimeout(function(item) { item.remove(); }, 3300, piece);
+      }
+    }
+
+    openSurprise.addEventListener('click', function() {
+      launchCelebration(28);
+      document.querySelector('#memories').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    finalMessageButton.addEventListener('click', function() {
+      hiddenMessage.hidden = false;
+      finalMessageButton.innerHTML = 'Message unlocked <i class="fa-solid fa-heart" aria-hidden="true"></i>';
+      finalMessageButton.setAttribute('aria-expanded', 'true');
+      window.requestAnimationFrame(function() { hiddenMessage.classList.add('is-visible'); });
+      launchCelebration(20);
+    });
+
+    function closeLightbox() {
+      lightbox.hidden = true;
+      document.body.classList.remove('modal-open');
+      lightboxImage.removeAttribute('src');
+    }
+
+    memoryCards.forEach(function(card) {
+      card.addEventListener('click', function() {
+        var image = card.querySelector('img');
+        lightboxImage.src = image.currentSrc || image.src;
+        lightboxImage.alt = image.alt;
+        lightboxCaption.textContent = card.dataset.caption || '';
+        lightbox.hidden = false;
+        document.body.classList.add('modal-open');
+        lightboxClose.focus();
+      });
+    });
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    document.querySelector('[data-lightbox-close]').addEventListener('click', closeLightbox);
+
+    musicToggle.addEventListener('click', function() {
+      if (birthdayMusic.paused) {
+        birthdayMusic.play().then(function() {
+          musicLabel.textContent = 'Pause music';
+          musicToggle.setAttribute('aria-label', 'Pause birthday music');
+        }).catch(function() {
+          musicLabel.textContent = 'Add your song';
+          musicToggle.setAttribute('aria-label', 'Add a music file before playing');
+        });
+      } else {
+        birthdayMusic.pause();
+        musicLabel.textContent = 'Play a song';
+        musicToggle.setAttribute('aria-label', 'Play birthday music');
+      }
+    });
+
+    birthdayMusic.addEventListener('ended', function() {
+      musicLabel.textContent = 'Play a song';
+      musicToggle.setAttribute('aria-label', 'Play birthday music');
+    });
+
+    var dateTarget = document.querySelector('#birthday-date');
+    // EDIT: replace the birthday date shown in the welcome card.
+    var dateText = '13 October 2010';
+    var dateIndex = 0;
+    window.setTimeout(function() {
+      var dateTimer = window.setInterval(function() {
+        dateTarget.textContent += dateText.charAt(dateIndex);
+        dateIndex++;
+        if (dateIndex >= dateText.length) window.clearInterval(dateTimer);
+      }, 70);
+    }, 500);
+
+    var letterModal = document.querySelector('#letter-modal');
+    var letterTitle = document.querySelector('#letter-title');
+    var letterText = document.querySelector('.text__letter p');
+    var letterTitleTimer;
+    var letterContentTimer;
+    var letterTimeouts = [];
+    // EDIT: replace the letter title and message.
+    var titleLetter = 'A little note for you';
+    var letterMessage = 'You are a very special girl. Today, I wish you all the best, lots of health, and lots of joy. I hope we celebrate many more birthdays together. Happy birthday, YASHVII.';
+
+    function clearLetterTimers() {
+      window.clearInterval(letterTitleTimer);
+      window.clearInterval(letterContentTimer);
+      letterTimeouts.forEach(function(timer) { window.clearTimeout(timer); });
+      letterTimeouts = [];
+    }
+
+    function resetLetter() {
+      clearLetterTimers();
+      letterTitle.textContent = '';
+      letterText.textContent = '';
+      document.querySelector('#heart__letter').classList.remove('animationOp');
+      document.querySelector('.love__img').classList.remove('animationOp');
+      document.querySelector('#mewmew').classList.remove('animationOp');
+      document.querySelectorAll('.heart').forEach(function(item) { item.classList.remove('animation'); });
+    }
+
+    function typeInto(target, text, speed) {
+      var index = 0;
+      var timer = window.setInterval(function() {
+        target.textContent += text.charAt(index);
+        index++;
+        if (index >= text.length) window.clearInterval(timer);
+      }, speed);
+      return timer;
+    }
+
+    function openLetter() {
+      resetLetter();
+      letterModal.hidden = false;
+      document.body.classList.add('modal-open');
+      window.requestAnimationFrame(function() { letterModal.classList.add('is-open'); });
+
+      letterTimeouts.push(window.setTimeout(function() {
+        letterTitleTimer = typeInto(letterTitle, titleLetter, 80);
+      }, 350));
+      letterTimeouts.push(window.setTimeout(function() {
+        document.querySelector('#heart__letter').classList.add('animationOp');
+        document.querySelector('.love__img').classList.add('animationOp');
+        document.querySelector('#mewmew').classList.add('animationOp');
+      }, 900));
+      letterTimeouts.push(window.setTimeout(function() {
+        document.querySelectorAll('.heart').forEach(function(item) { item.classList.add('animation'); });
+      }, 1200));
+      letterTimeouts.push(window.setTimeout(function() {
+        letterContentTimer = typeInto(letterText, letterMessage, 35);
+      }, 1450));
+    }
+
+    function closeLetter() {
+      resetLetter();
+      letterModal.classList.remove('is-open');
+      window.setTimeout(function() {
+        letterModal.hidden = true;
+        document.body.classList.remove('modal-open');
+      }, 220);
+    }
+
+    document.querySelector('#btn__letter').addEventListener('click', openLetter);
+    document.querySelector('#letter-close').addEventListener('click', closeLetter);a
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key !== 'Escape') return;
+      if (!lightbox.hidden) closeLightbox();
+      if (!letterModal.hidden) closeLetter();
+    });
+  </script>
+</body>
+</html>
